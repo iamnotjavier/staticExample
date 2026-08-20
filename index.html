@@ -1,412 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>modern · static deploy</title>
-  <!-- modern static page – ready for github actions -->
-  <style>
-    /* ----- reset & base ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Nexus · link redirecter</title>
+    <!-- Modern static page – IT topics link redirecter -->
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #f8fafc;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 1.5rem;
-      line-height: 1.5;
-      color: #0b1120;
-    }
+        body {
+            background: #0b1120;
+            background-image: radial-gradient(circle at 30% 10%, #1e293b 0%, #0b1120 80%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem;
+            line-height: 1.5;
+            color: #f1f5f9;
+        }
 
-    /* ----- card container ----- */
-    .deploy-card {
-      max-width: 820px;
-      width: 100%;
-      background: #ffffff;
-      border-radius: 2.5rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-      padding: 3rem 2.5rem;
-      transition: box-shadow 0.2s ease;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(2px);
-    }
+        /* ----- main card – glassmorphism + subtle glow ----- */
+        .redirect-card {
+            max-width: 880px;
+            width: 100%;
+            background: rgba(17, 24, 39, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            padding: 2.8rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+            transition: box-shadow 0.3s ease;
+        }
 
-    @media (max-width: 480px) {
-      .deploy-card {
-        padding: 2rem 1.25rem;
-        border-radius: 2rem;
-      }
-    }
+        @media (max-width: 550px) {
+            .redirect-card {
+                padding: 2rem 1.25rem;
+                border-radius: 2rem;
+            }
+        }
 
-    /* ----- header / badge ----- */
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-    }
+        /* ----- header: logo + tagline ----- */
+        .header-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.2rem;
+        }
 
-    .badge {
-      background: #eef2ff;
-      color: #1e3a8a;
-      font-weight: 600;
-      font-size: 0.75rem;
-      letter-spacing: 0.02em;
-      padding: 0.4rem 1rem;
-      border-radius: 100px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      border: 1px solid #c7d2fe;
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
-    .badge svg {
-      width: 16px;
-      height: 16px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+        .brand-icon {
+            background: #2563eb;
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 8px 16px -6px rgba(37, 99, 235, 0.3);
+        }
 
-    .gh-badge {
-      background: #0b1120;
-      color: #f8fafc;
-      border: none;
-      padding: 0.4rem 1.2rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      border-radius: 100px;
-      font-size: 0.8rem;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
+        .brand h2 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .gh-badge:hover {
-      background: #1e293b;
-    }
+        .tagline {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(4px);
+            letter-spacing: 0.01em;
+        }
 
-    .gh-badge svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
+        /* ----- description ----- */
+        .desc {
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+            color: #e2e8f0;
+            font-weight: 300;
+            border-left: 3px solid #3b82f6;
+            padding-left: 1.2rem;
+            background: linear-gradient(90deg, rgba(59,130,246,0.08) 0%, transparent 90%);
+            border-radius: 0 12px 12px 0;
+        }
 
-    /* ----- typography ----- */
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      color: #0b1120;
-    }
+        /* ----- link grid – 6 IT topics (modern cards) ----- */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0 2.2rem;
+        }
 
-    .subhead {
-      font-size: 1.2rem;
-      color: #334155;
-      margin-bottom: 2rem;
-      font-weight: 400;
-      border-left: 4px solid #818cf8;
-      padding-left: 1rem;
-    }
+        .link-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 1.8rem;
+            padding: 1.25rem 1.2rem 1.1rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px -4px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
 
-    @media (max-width: 500px) {
-      h1 { font-size: 2.1rem; }
-      .subhead { font-size: 1rem; }
-    }
+        .link-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.6);
+        }
 
-    /* ----- feature grid ----- */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin: 2.5rem 0 2rem;
-    }
+        .link-card .topic-icon {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
 
-    .feature-item {
-      background: #f1f5f9;
-      padding: 1.25rem 1.25rem 1rem;
-      border-radius: 1.5rem;
-      transition: background 0.2s, transform 0.1s;
-      border: 1px solid #e2e8f0;
-    }
+        .link-card h3 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.15rem;
+            color: #f8fafc;
+        }
 
-    .feature-item:hover {
-      background: #eef2ff;
-      border-color: #a5b4fc;
-    }
+        .link-card .topic-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            flex: 1;
+        }
 
-    .feature-icon {
-      font-size: 1.8rem;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
+        .link-card .arrow-badge {
+            align-self: flex-start;
+            background: rgba(37, 99, 235, 0.15);
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #93bbfc;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            transition: background 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
-    .feature-item h3 {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-      color: #0f172a;
-    }
+        .link-card:hover .arrow-badge {
+            background: rgba(37, 99, 235, 0.25);
+            border-color: #2563eb;
+        }
 
-    .feature-item p {
-      color: #475569;
-      font-size: 0.9rem;
-    }
+        /* ----- action bar : redirect simulation / meta ----- */
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 3rem;
+            padding: 0.8rem 1.5rem 0.8rem 1.8rem;
+            margin-top: 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
 
-    /* ----- action panel (github actions style) ----- */
-    .action-panel {
-      background: #f1f5f9;
-      border-radius: 1.75rem;
-      padding: 1.5rem 1.75rem;
-      margin: 2rem 0 1.5rem;
-      border: 1px solid #d1d9e6;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
+        .action-bar .status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
 
-    .action-panel .label {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-weight: 500;
-      color: #1e293b;
-    }
+        .action-bar .status .dot-green {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e66;
+        }
 
-    .action-panel .label .dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 2px #dcfce7;
-    }
+        .action-bar .redirect-counter {
+            background: #1e293b;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+        }
 
-    .action-panel code {
-      background: #0b1120;
-      color: #e2e8f0;
-      padding: 0.4rem 1rem;
-      border-radius: 60px;
-      font-size: 0.9rem;
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      letter-spacing: -0.01em;
-      border: 1px solid #334155;
-    }
+        .action-bar .redirect-counter span {
+            color: #60a5fa;
+            font-weight: 600;
+        }
 
-    .action-btn {
-      background: #0b1120;
-      border: none;
-      color: white;
-      font-weight: 500;
-      padding: 0.5rem 1.5rem;
-      border-radius: 60px;
-      font-size: 0.9rem;
-      cursor: default;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: background 0.15s;
-      border: 1px solid #334155;
-    }
+        /* ----- footer / redirect hint ----- */
+        .footer-redirect {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #64748b;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 1.5rem;
+        }
 
-    .action-btn:hover {
-      background: #1e293b;
-    }
+        .footer-redirect .hint {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    /* ----- deploy status / meta ----- */
-    .deploy-meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 2.2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #e2e8f0;
-      font-size: 0.9rem;
-      color: #475569;
-    }
+        .footer-redirect .hint kbd {
+            background: #1e293b;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+        }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #e6f7e6;
-      padding: 0.25rem 1rem 0.25rem 0.75rem;
-      border-radius: 100px;
-      color: #166534;
-      font-weight: 500;
-    }
+        .footer-redirect .badge-gh {
+            background: #0b1120;
+            color: #e2e8f0;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            border: 1px solid #334155;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
-    .status-badge .pulse {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
+        /* ----- utils ----- */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+        }
 
-    @keyframes pulse-dot {
-      0% { opacity: 0.6; transform: scale(0.95); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0.6; transform: scale(0.95); }
-    }
-
-    .commit-hash {
-      font-family: 'JetBrains Mono', monospace;
-      background: #e9edf2;
-      padding: 0.2rem 0.8rem;
-      border-radius: 60px;
-      font-size: 0.8rem;
-      color: #1e293b;
-    }
-
-    /* ----- footer / tiny note ----- */
-    .footer-note {
-      margin-top: 1.8rem;
-      font-size: 0.8rem;
-      color: #64748b;
-      text-align: center;
-      letter-spacing: 0.01em;
-    }
-
-    .footer-note a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px dotted #94a3b8;
-    }
-
-    .footer-note a:hover {
-      color: #1d4ed8;
-      border-bottom-color: #2563eb;
-    }
-
-    /* ----- utilities ----- */
-    .flex-gap {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-  </style>
+        /* small screens */
+        @media (max-width: 480px) {
+            .header-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .brand h2 { font-size: 1.5rem; }
+            .desc { font-size: 1rem; }
+            .action-bar { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+            .action-bar .status { justify-content: center; }
+        }
+    </style>
 </head>
 <body>
-  <main class="deploy-card" role="main">
 
-    <!-- header badge row -->
-    <div class="badge-row">
-      <span class="badge">
-        <svg viewBox="0 0 24 24" width="16" height="16">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        </svg>
-        static · modern
-      </span>
-      <a href="#" class="gh-badge" style="pointer-events: none;">
-        <svg viewBox="0 0 16 16" width="16" height="16">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        github actions
-      </a>
-    </div>
+    <main class="redirect-card" role="main">
 
-    <!-- main heading -->
-    <h1>deploy ready</h1>
-    <div class="subhead">
-      modern static HTML · built for GitHub Actions
-    </div>
+        <!-- header: brand + tagline -->
+        <div class="header-row">
+            <div class="brand">
+                <div class="brand-icon">⚡</div>
+                <h2>IT Nexus</h2>
+            </div>
+            <span class="tagline">✦ link redirecter · online topics</span>
+        </div>
 
-    <!-- feature grid : 3 items -->
-    <div class="feature-grid">
-      <div class="feature-item">
-        <span class="feature-icon">⚡</span>
-        <h3>zero config</h3>
-        <p>single file, no build step. just commit & push.</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🔄</span>
-        <h3>actions workflow</h3>
-        <p>deploy to pages or any static host via GH actions.</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🎨</span>
-        <h3>modern UI</h3>
-        <p>clean, responsive, with a touch of glassmorphism.</p>
-      </div>
-    </div>
+        <!-- description -->
+        <div class="desc">
+            <span style="font-weight: 400; color: #f8fafc;">Instant IT knowledge</span> — curated redirects for developers, engineers &amp; cloud enthusiasts.
+        </div>
 
-    <!-- action panel : github actions simulation -->
-    <div class="action-panel">
-      <div class="label">
-        <span class="dot"></span>
-        <span>deployment</span>
-      </div>
-      <code>actions/upload-pages-artifact@v3</code>
-      <span class="action-btn" style="pointer-events: none;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-        run
-      </span>
-    </div>
+        <!-- link grid: 6 IT topics (modern link cards) -->
+        <div class="link-grid">
+            <!-- 1 -->
+            <a href="#" class="link-card" onclick="simulateRedirect('DevOps')">
+                <span class="topic-icon">🛠️</span>
+                <h3>DevOps</h3>
+                <span class="topic-desc">CI/CD, automation, SRE</span>
+                <span class="arrow-badge">↗ redirect</span>
+            </a>
+            <!-- 2 -->
+            <a href="#" class="link-card" onclick="simulateRedirect('Cloud')">
+                <span class="topic-icon">☁️</span>
+                <h3>Cloud</h3>
+                <span class="topic-desc">AWS · Azure · GCP</span>
+                <span class="arrow-badge">↗ redirect</span>
+            </a>
+            <!-- 3 -->
+            <a href="#" class="link-card" onclick="simulateRedirect('Kubernetes')">
+                <span class="topic-icon">⎈</span>
+                <h3>Kubernetes</h3>
+                <span class="topic-desc">clusters, helm, operators</span>
+                <span class="arrow-badge">↗ redirect</span>
+            </a>
+            <!-- 4 -->
+            <a href="#" class="link-card" onclick="simulateRedirect('Python')">
+                <span class="topic-icon">🐍</span>
+                <h3>Python</h3>
+                <span class="topic-desc">fastapi, data, ml</span>
+                <span class="arrow-badge">↗ redirect</span>
+            </a>
+            <!-- 5 -->
+            <a href="#" class="link-card" onclick="simulateRedirect('Security')">
+                <span class="topic-icon">🔐</span>
+                <h3>Security</h3>
+                <span class="topic-desc">zero‑trust, IAM, audits</span>
+                <span class="arrow-badge">↗ redirect</span>
+            </a>
+            <!-- 6 -->
+            <a href="#" class="link-card" onclick="simulateRedirect('AI/ML')">
+                <span class="topic-icon">🧠</span>
+                <h3>AI/ML</h3>
+                <span class="topic-desc">LLM, transformers, MLOps</span>
+                <span class="arrow-badge">↗ redirect</span>
+            </a>
+        </div>
 
-    <!-- deploy meta : status + commit -->
-    <div class="deploy-meta">
-      <div class="status-badge">
-        <span class="pulse"></span>
-        <span>deployed · 2026-08-20</span>
-      </div>
-      <div class="flex-gap">
-        <span class="commit-hash">sha · 4f2a1b</span>
-        <span style="color: #94a3b8;">|</span>
-        <span style="display: inline-flex; align-items: center; gap: 0.3rem;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          <span>1 min ago</span>
-        </span>
-      </div>
-    </div>
+        <!-- action bar : redirect simulation + counter -->
+        <div class="action-bar">
+            <div class="status">
+                <span class="dot-green"></span>
+                <span>active · redirect ready</span>
+            </div>
+            <div class="redirect-counter">
+                <span id="clickCounter">0</span> redirects (demo)
+            </div>
+        </div>
 
-    <!-- extra: github actions workflow hint -->
-    <div class="footer-note">
-      <span>🚀 ready for </span>
-      <a href="#" style="pointer-events: none;">.github/workflows/deploy.yml</a>
-      <span> · static hosting via pages or any CDN</span>
-    </div>
+        <!-- footer : hint + github badge -->
+        <div class="footer-redirect">
+            <div class="hint">
+                <span>💡 click any topic → simulate redirect</span>
+                <kbd>static</kbd>
+            </div>
+            <span class="badge-gh">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+                deploy · gh actions
+            </span>
+        </div>
 
-    <!-- tiny watermark (optional) -->
-    <div style="margin-top: 1.2rem; font-size: 0.7rem; color: #cbd5e1; text-align: right; letter-spacing: 0.02em; border-top: 1px dashed #e9edf2; padding-top: 0.8rem;">
-      <span>✦ modern static · 2026</span>
-    </div>
-  </main>
+        <!-- tiny watermark -->
+        <div style="margin-top: 1.5rem; font-size: 0.65rem; color: #334155; text-align: right; letter-spacing: 0.03em; opacity: 0.6;">
+            ⚡ static redirecter · 2026
+        </div>
+    </main>
 
-  <!-- minimal JS – just to show that it's alive (no-op but present) -->
-  <script>
-    (function() {
-      // small console greeting – shows that JS is active
-      console.log('✨ modern static page · ready for github actions');
-      // you could also add a tiny interactive feature, but we keep it clean.
-      // optional: add a subtle animation on card load? not needed.
-    })();
-  </script>
+    <!-- minimal JavaScript: simulate redirect + counter -->
+    <script>
+        (function() {
+            // counter state
+            let redirectCount = 0;
+            const counterEl = document.getElementById('clickCounter');
+
+            // expose function globally for onclick
+            window.simulateRedirect = function(topic) {
+                // increment counter
+                redirectCount += 1;
+                if (counterEl) {
+                    counterEl.textContent = redirectCount;
+                }
+
+                // simulate redirect: show toast-like alert (modern, but non-blocking)
+                // we use a subtle console + alert (but we want modern feel, so we use a custom toast)
+                // we'll create a temporary toast message (no external libs)
+                const toast = document.createElement('div');
+                toast.style.position = 'fixed';
+                toast.style.bottom = '2rem';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = 'rgba(15, 23, 42, 0.9)';
+                toast.style.backdropFilter = 'blur(12px)';
+                toast.style.padding = '0.8rem 2rem';
+                toast.style.borderRadius = '60px';
+                toast.style.border = '1px solid rgba(255,255,255,0.08)';
+                toast.style.color = '#f1f5f9';
+                toast.style.fontWeight = '500';
+                toast.style.boxShadow = '0 20px 40px -12px rgba(0,0,0,0.6)';
+                toast.style.zIndex = '9999';
+                toast.style.letterSpacing = '0.01em';
+                toast.style.fontSize = '0.95rem';
+                toast.style.transition = 'opacity 0.2s ease';
+                toast.style.opacity = '0';
+                toast.innerHTML = `↗ redirecting to <strong style="color: #60a5fa;">${topic}</strong> · (demo)`;
+
+                document.body.appendChild(toast);
+
+                // fade in
+                requestAnimationFrame(() => {
+                    toast.style.opacity = '1';
+                });
+
+                // remove after 2.2s
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    }, 250);
+                }, 2200);
+
+                // also log to console (dev)
+                console.log(`[IT Nexus] redirect to ${topic} (total: ${redirectCount})`);
+            };
+
+            // optional: initial counter set to 0
+            if (counterEl) counterEl.textContent = '0';
+
+            // additional: if any link is clicked, prevent default (already using onclick)
+            // but we also want to prevent default for all .link-card (just in case)
+            document.querySelectorAll('.link-card').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault(); // we handle via onclick
+                });
+            });
+
+        })();
+    </script>
 </body>
 </html>
